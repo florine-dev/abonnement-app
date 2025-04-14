@@ -1,5 +1,6 @@
 // src/components/Auth/Login.tsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Login: React.FC = () => {
   return (
@@ -59,9 +60,9 @@ const Login: React.FC = () => {
         </p>
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
           Pas encore de compte ?{" "}
-          <a href="/register" className="text-blue-600 dark:text-blue-400">
+          <Link to="/Signup" className="text-blue-600 dark:text-blue-400">
             S'inscrire
-          </a>
+          </Link>
         </p>
       </div>
     </section>
