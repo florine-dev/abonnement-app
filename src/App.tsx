@@ -1,9 +1,10 @@
+import MyRoutes from "./MyRoutes";
 import Acceuil from "./pages/Acceuil";
 
 function App() {
   return (
     <>
-      <Acceuil />
+      <MyRoutes />
     </>
   );
 }

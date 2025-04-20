@@ -1,23 +1,31 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Acceuil from "./pages/Acceuil";
 import MainLayout from "./layout/MainLayout";
-import App from "./App";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
-import Signup from "./Signup";
-import AdminDashboard from "./AdminDashboard";
+import Acceuil from "./pages/Acceuil";
+
+import { useAuth } from "./hooks/useAuth";
+import AdminDashboard from "./pages/AdminDashboard";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Payment_History from "./pages/Payment_History";
+import Setting from "./pages/Setting";
+import Signup from "./pages/Signup";
 
 function MyRoutes() {
+  const { token } = useAuth();
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Acceuil />} />
-        <Route path="app" element={<App />} />
         <Route path="login" element={<Login />} />
-        <Route path="dashboard" element={<Dashboard />} />
         <Route path="signup" element={<Signup />} />
-        <Route path="adminDashboard" element={<AdminDashboard />} />
+        {token && (
+          <>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="adminDashboard" element={<AdminDashboard />} />
+            <Route path="paymentHistory" element={<Payment_History />}></Route>
+            <Route path="setting" element={<Setting />}></Route>
+          </>
+        )}
       </Route>
     </Routes>
   );
