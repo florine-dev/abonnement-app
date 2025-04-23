@@ -1,8 +1,11 @@
-import React from "react";
+import { useGetSubscriptionPlans } from "../api/plan";
 import herderAbonnement from "../assets/images/herderAbonnement.png";
 import SubscriptionPlan from "../components/SubcriptionPlan";
 
 function Acceuil() {
+  const { data: plans, isLoading } = useGetSubscriptionPlans();
+
+  if (isLoading) return <span>Loading...</span>;
   return (
     <div>
       {/* Hero section avec image de fond et overlay */}
@@ -28,30 +31,14 @@ function Acceuil() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
-          <SubscriptionPlan
-            title="Soft"
-            amount={9.99}
-            features={["Basic features"]}
-          />
-          <SubscriptionPlan
-            title="Pro"
-            amount={24.99}
-            features={[
-              "Unlimited access",
-              "Priority support",
-              "Regular updates",
-            ]}
-            isPopular={true}
-          />
-          <SubscriptionPlan
-            title="Elite"
-            amount={49.99}
-            features={[
-              "All Pro features",
-              "Team management",
-              "Advanced analytics",
-            ]}
-          />
+          {plans?.map((plan) => (
+            <SubscriptionPlan
+              title={plan.name}
+              amount={plan.price}
+              features={plan.features}
+              id={plan.id}
+            />
+          ))}
         </div>
       </div>
     </div>

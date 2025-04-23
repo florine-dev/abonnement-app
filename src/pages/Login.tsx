@@ -1,15 +1,34 @@
 // src/components/Auth/Login.tsx
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { useForm } from "react-hook-form";
+
+interface LoginProps {
+  email: string;
+  password: string;
+}
 
 const Login: React.FC = () => {
+  const { login } = useAuth();
+
+  const navigate = useNavigate();
+
+  const { register, handleSubmit } = useForm<LoginProps>();
+
+  const handleLogin = async (data: LoginProps) => {
+    login(data.email, data.password).then(() => {
+      navigate("/Dfashboard");
+    });
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex justify-center items-center">
       <div className="w-full max-w-md bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700 p-6">
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
           Se connecter
         </h1>
-        <form action="#" method="POST">
+        <form onSubmit={handleSubmit(handleLogin)}>
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -18,12 +37,12 @@ const Login: React.FC = () => {
               Email
             </label>
             <input
-              type="email"
+              type={"email"}
               id="email"
-              name="email"
               className="mt-1 w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               placeholder="example@mail.com"
               required
+              {...register("email", { required: "Email is required" })}
             />
           </div>
           <div className="mb-6">
@@ -34,12 +53,12 @@ const Login: React.FC = () => {
               Mot de passe
             </label>
             <input
-              type="password"
+              type={"password"}
               id="password"
-              name="password"
               className="mt-1 w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               placeholder="********"
               required
+              {...register("password", { required: "Password is required" })}
             />
           </div>
           <button

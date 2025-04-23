@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import Payment_History from "./pages/Payment_History";
 import Setting from "./pages/Setting";
 import Signup from "./pages/Signup";
+import ConfirmPlan from "./pages/ConfirmPlan";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 function MyRoutes() {
   const { token } = useAuth();
@@ -22,7 +24,9 @@ function MyRoutes() {
           <>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="adminDashboard" element={<AdminDashboard />} />
+            <Route path="confirm-plan" element={<ConfirmPlan />} />
             <Route path="paymentHistory" element={<Payment_History />}></Route>
+            <Route path="success" element={<PaymentSuccess />}></Route>
             <Route path="setting" element={<Setting />}></Route>
           </>
         )}

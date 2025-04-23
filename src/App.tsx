@@ -1,10 +1,22 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import MyRoutes from "./MyRoutes";
-import Acceuil from "./pages/Acceuil";
+
+import { ToastContainer } from "react-toastify";
 
 function App() {
+  const queryClient = new QueryClient();
   return (
     <>
-      <MyRoutes />
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <BrowserRouter>
+            <MyRoutes />
+          </BrowserRouter>
+        </AuthProvider>
+      </QueryClientProvider>
+      <ToastContainer />
     </>
   );
 }

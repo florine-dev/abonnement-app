@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import AppMenu from "./Menu/Menu";
 
 function Navbar() {
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
 
   const [anchor, setAnchor] = React.useState<null | HTMLElement>(null);
 
@@ -140,7 +140,7 @@ function Navbar() {
                   options={[
                     {
                       label: "Logout",
-                      onClick: () => {},
+                      onClick: logout,
                     },
                     {
                       label: "Settings",

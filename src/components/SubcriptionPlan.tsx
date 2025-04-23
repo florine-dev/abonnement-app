@@ -1,11 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSetSelectedPlan } from "../hooks/useSelectedPlan";
+import { useAuth } from "../hooks/useAuth";
 
 interface SubscriptionPlanProps {
   title: string;
   amount: number;
   features: string[];
   isPopular?: boolean;
+  id: number;
 }
 
 const SubscriptionPlan: React.FC<SubscriptionPlanProps> = ({
@@ -13,7 +16,24 @@ const SubscriptionPlan: React.FC<SubscriptionPlanProps> = ({
   amount,
   features,
   isPopular = false,
+  id,
 }) => {
+  const setSelectedPlan = useSetSelectedPlan();
+
+  const { token } = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleSelectSubscription = () => {
+    setSelectedPlan({ features, id, name: title, price: amount });
+
+    if (!token) {
+      return navigate("/login");
+    }
+
+    return navigate("/confirm-plan");
+  };
+
   return (
     <div
       className={`relative flex flex-col border border-gray-200 rounded-2xl p-6 bg-white shadow-sm hover:shadow-lg transition-all w-full max-w-sm text-center ${
@@ -38,8 +58,9 @@ const SubscriptionPlan: React.FC<SubscriptionPlanProps> = ({
       <button
         aria-label={`Subscribe to ${title} plan`}
         className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition mb-5"
+        onClick={handleSelectSubscription}
       >
-        <Link to="/login">Subscribe</Link>
+        <Link to="#">Subscribe</Link>
       </button>
 
       {/* Features List */}
