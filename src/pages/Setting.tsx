@@ -1,54 +1,122 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useUser } from "../api/useUser";
+import { UpdateUserProps, useUpdateUser } from "../api/useUpdateUser";
+import { toast } from "react-toastify";
+
+interface FormValues {
+  name: string;
+  email: string;
+  phone: string;
+  password?: string;
+  address?: string; // Add address field
+}
 
 function Setting() {
+  const { data: user, isLoading } = useUser();
+  const { register, handleSubmit, reset } = useForm<UpdateUserProps>();
+  const updateMutation = useUpdateUser();
+
+  console.log(user);
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        password: "",
+        address: user.address || "", // Reset the address field as well
+      });
+    }
+  }, [user, reset]);
+
+  const onSubmit = (data: UpdateUserProps) => {
+    updateMutation
+      .mutateAsync({ userProps: data, id: user?.id || -1 })
+      .then(() => {
+        toast.success("Mise a jour avec success");
+      });
+  };
+
+  if (isLoading) return <p>Chargement...</p>;
+  if (!user) return <p>Utilisateur introuvable</p>;
+
   return (
-    <div>
-      {/* Mise à jour des données personnelles */}
-      <div className="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-          Mise à jour des données personnelles
-        </h2>
-        <form action="#" method="POST">
-          <div className="mb-4">
-            <label
-              htmlFor="fullName"
-              className="block text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Nom complet
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              className="mt-1 w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              defaultValue="John Doe"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="mt-1 w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              defaultValue="john.doe@mail.com"
-              required
-            />
-          </div>
+    <div className="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 mt-6">
+      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+        Mise à jour du profil utilisateur
+      </h2>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Nom complet
+          </label>
+          <input
+            type="text"
+            {...register("name")}
+            className="w-full p-2 rounded border border-gray-300 dark:border-gray-600"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Adresse e-mail
+          </label>
+          <input
+            type="email"
+            {...register("email")}
+            className="w-full p-2 rounded border border-gray-300 dark:border-gray-600"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Numéro de téléphone
+          </label>
+          <input
+            type="text"
+            {...register("phone")}
+            className="w-full p-2 rounded border border-gray-300 dark:border-gray-600"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Adresse
+          </label>
+          <input
+            type="text"
+            {...register("address")}
+            className="w-full p-2 rounded border border-gray-300 dark:border-gray-600"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Nouveau mot de passe (facultatif)
+          </label>
+          <input
+            type="password"
+            {...register("password")}
+            placeholder="********"
+            className="w-full p-2 rounded border border-gray-300 dark:border-gray-600"
+          />
+        </div>
+
+        <div className="md:col-span-2">
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+            className="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition duration-200"
           >
-            Mettre à jour
+            Sauvegarder les modifications
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

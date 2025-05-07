@@ -23,6 +23,7 @@ const ConfirmPlan = () => {
   const [value, setValue] = useState<number | undefined>(defaultPlan?.id);
 
   const { data: plans, isLoading } = useGetSubscriptionPlans();
+
   const { mutateAsync: initPayment, isPending: isInitialisingPayment } =
     useInitPayment();
 
@@ -32,7 +33,6 @@ const ConfirmPlan = () => {
     if (selectedPlan) {
       initPayment(selectedPlan.id).then((result) => {
         window.location.href = result.url;
-        console.log(result);
       });
     }
   };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import AppMenu from "./Menu/Menu";
 
@@ -8,8 +8,15 @@ function Navbar() {
 
   const [anchor, setAnchor] = React.useState<null | HTMLElement>(null);
 
+  const navigate = useNavigate();
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchor(anchor ? null : event.currentTarget);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
 
   return (
@@ -140,11 +147,13 @@ function Navbar() {
                   options={[
                     {
                       label: "Logout",
-                      onClick: logout,
+                      onClick: handleLogout,
                     },
                     {
                       label: "Settings",
-                      onClick: () => {},
+                      onClick: () => {
+                        navigate("/setting");
+                      },
                     },
                   ]}
                 />

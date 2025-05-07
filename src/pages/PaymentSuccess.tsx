@@ -5,19 +5,20 @@ import { useEffect } from "react";
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
 
-  // const { data: status, isLoading } = useGetPaymentStatus(
-  //   searchParams.get("session_id")!
-  // );
+  const { data: status, isLoading } = useGetPaymentStatus(
+    searchParams.get("session_id")!
+  );
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/dashboard");
-    // if (!isLoading && status?.paid) {
-    // }
-  }, []);
+    if (!isLoading && status?.paid) {
+      // Paiement confirmé → redirige vers dashboard
+      // navigate("/dashboard");
+    }
+  }, [isLoading, status, navigate]);
 
-  return navigate;
+  return navigate("/dashboard");
 };
 
 export default PaymentSuccess;

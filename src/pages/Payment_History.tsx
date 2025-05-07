@@ -1,5 +1,6 @@
 import React from "react";
-import ReusableTable from "../components/ReusableTable";
+
+import PaymentHistory from "../components/PaymentHistory";
 
 function Payment_History() {
   return (
@@ -10,7 +11,7 @@ function Payment_History() {
         <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
           Historique des Paiements
         </h2>
-        <ReusableTable />
+        <PaymentHistory />
       </div>
     </div>
   );

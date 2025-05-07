@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { extractErrorMessage } from "../utils/error";
 
 interface LoginProps {
   email: string;
@@ -17,9 +19,14 @@ const Login: React.FC = () => {
   const { register, handleSubmit } = useForm<LoginProps>();
 
   const handleLogin = async (data: LoginProps) => {
-    login(data.email, data.password).then(() => {
-      navigate("/Dfashboard");
-    });
+    login(data.email, data.password)
+      .then(() => {
+        navigate("/Dashboard");
+      })
+      .catch((error) => {
+        console.log(error?.response?.data);
+        toast.error(extractErrorMessage(error));
+      });
   };
 
   return (
